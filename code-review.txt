@@ -1,0 +1,21 @@
+Feedback based on Performance, Security, Code Design & standardization, Log & Traceability.
+
+
+Performance
+Use db-level query to filter. Create a OrderRepository for data access layer.
+Use joins instead of querying inside for loop.
+
+Standardization
+Create a new OrderResponse class that will return the actual response. Then delegate the OrderResource class into the OrderIndexResource class
+Something like.
+app()->make(OrderResponse::class)
+->setData(OrderIndexResource::collection())
+->makeResponse()
+
+Security
+Avoid using raw query. if you need to use raw query. make sure to use prepared statements & sanitize inputs.
+Never trust user inputs (user_id) in requests. user_id must be taken from authenticated sources. Eg: Auth::user().
+
+Logging.
+Errors in controller, we will log them into specific channels. Unhandled errors must always be reported and sent to Alerting system.
+How do we standardize for error response ? By using the OrderResponse class.
